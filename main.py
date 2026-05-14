@@ -21,12 +21,7 @@ import utils
 
 if __name__ == "__main__":
     
-    """
-    # Create result directory
-    result_dir = "./result"
-    if not os.path.exists(result_dir):
-        os.makedirs(result_dir)
-    """
+
     #tree 
     file_name = "tree"  
     input_dir = os.path.join('.', 'norm_dataset', file_name)
@@ -155,35 +150,10 @@ if __name__ == "__main__":
     random_seed = 42
     np.random.seed(random_seed)
     random.seed(random_seed)
-
-    """
-    # Create subdirectory for current dataset
-    dataset_result_dir = os.path.join(result_dir, file_name)
-    if not os.path.exists(dataset_result_dir):
-        os.makedirs(dataset_result_dir)
-    """
     
     G = utils.load_graph_with_attributes(node_file_path, edge_file_path)
     player_names = sorted(G.nodes())
     true_labels = [G.nodes[n]['actual_community'] for n in player_names]
-    num_nodes = len(player_names)
-    unique_labels = list(set(true_labels))
-    BEST_CLUSTERS = len(unique_labels)
-
-    
-    """
-    # Network visualization
-    print(f"Network visualization: {num_nodes} nodes, {BEST_CLUSTERS} communities")
-    pos = nx.spring_layout(G, seed=42)
-    plt.figure(figsize=(12, 10))
-    nx.draw_networkx_nodes(G, pos, node_color=true_labels, 
-                          cmap='tab20', node_size=150)
-    nx.draw_networkx_edges(G, pos, edge_color='gray', alpha=0.5)
-    plt.title(f"Original Network: {file_name}")
-    plt.axis('off')
-    plt.savefig(os.path.join(dataset_result_dir, f'{file_name}_network.png'))
-    plt.close()
-    """
     
     V = len(player_names)  
     E = G.number_of_edges()  
@@ -229,7 +199,7 @@ if __name__ == "__main__":
     for idx, params in enumerate(ParameterGrid(param_grid)):
         try:
             # 1. Generate spectral embeddings
-            embeddings = utils.enhanced_structural_embeddings(G, n_components=params['n_components'])
+            embeddings = utils.enhanced_structural_embeddings(G, params['n_components'],player_names)
             
             # 2. Build new graph based on community structure and TopK similarity
             G_emb = utils.community_topk_similarity_graph(
@@ -310,12 +280,3 @@ if __name__ == "__main__":
     print("Evaluation Metrics:")
     for metric, value in best_result['metrics'].items():
         print(f"  {metric}: {value:.6f}")
-
-    
-    """
-    # Visualize results
-    pred_labels = [best_result['partition'][n] for n in player_names]
-    utils.visualize_results(
-        G, best_result['G_emb'], pos, true_labels, pred_labels, file_name, dataset_result_dir
-    )
-    """
