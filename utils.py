@@ -139,11 +139,12 @@ def community_topk_similarity_graph(G, embeddings, player_names, resolution,
 
 def louvain_community_detection(G, resolution, n_iter, use_weight):
     """Louvain community detection method, time complexity O(n_iter * V log V)"""
+    weight_param = 'weight' if use_weight else None
     best_partition = None
     best_modularity = -1
     for _ in range(n_iter):  # Multiple runs, take the best
-        partition = community_louvain.best_partition(G, weight='weight', resolution=resolution)
-        mod = community_louvain.modularity(partition, G, weight='weight')
+        partition = community_louvain.best_partition(G, weight=weight_param, resolution=resolution)
+        mod = community_louvain.modularity(partition, G, weight=weight_param)
         if mod > best_modularity:
             best_modularity = mod
             best_partition = partition
