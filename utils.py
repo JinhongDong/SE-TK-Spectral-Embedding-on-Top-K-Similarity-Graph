@@ -100,13 +100,13 @@ def community_topk_similarity_graph(G, embeddings, player_names, resolution,
         try:
             edge_centrality = nx.edge_betweenness_centrality(G)
             sorted_edges = sorted(G.edges(), key=lambda x: edge_centrality[x], reverse=True)
-            for u, v in sorted_edges[:int(len(sorted_edges)*preserve_ratio)]:
+            for u, v in sorted_edges[:min(max_edges,int(len(sorted_edges)*preserve_ratio))]:
                 G_emb.add_edge(u, v, weight=1.0, type="preserved")
         except:
             # If centrality calculation fails, randomly preserve some edges
             edges = list(G.edges())
             random.shuffle(edges)
-            for u, v in edges[:min(100, len(edges))]:
+            for u, v in edges[:min(max_edges, len(edges)*preserve_ratio)]:
                 G_emb.add_edge(u, v, weight=1.0, type="preserved")
     
     # 2. Add TopK similarity edges
