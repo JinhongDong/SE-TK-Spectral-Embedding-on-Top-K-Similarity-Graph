@@ -35,7 +35,7 @@ if __name__ == "__main__":
     graph_k_factor = 10  
     louvain_n_iter = 10
     louvain_resolution = 2.0
-    louvain_use_weight = False
+    louvain_use_weight = True
     optimize_min_size = 3
     optimize_size_ratio = 0.3
     optimize_merge_small = True
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     # graph_k_factor = 5  
     # louvain_n_iter = 5
     # louvain_resolution = 2.0
-    # louvain_use_weight = False
+    # louvain_use_weight = True
     # optimize_min_size = 3
     # optimize_size_ratio = 0.2
     # optimize_merge_small = True
@@ -73,7 +73,7 @@ if __name__ == "__main__":
     # graph_k_factor = 10  
     # louvain_n_iter = 10
     # louvain_resolution = 1.2
-    # louvain_use_weight = False
+    # louvain_use_weight = True
     # optimize_min_size = 3
     # optimize_size_ratio = 0.2
     # optimize_merge_small = True
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     # graph_k_factor = 10  
     # louvain_n_iter = 5
     # louvain_resolution = 1.5
-    # louvain_use_weight = False
+    # louvain_use_weight = True
     # optimize_min_size = 3
     # optimize_size_ratio = 0.2
     # optimize_merge_small = True
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     # graph_k_factor = 15  
     # louvain_n_iter = 5
     # louvain_resolution = 1.2
-    # louvain_use_weight = False
+    # louvain_use_weight = True
     # optimize_min_size = 10
     # optimize_size_ratio = 0.2
     # optimize_merge_small = True
@@ -130,7 +130,7 @@ if __name__ == "__main__":
     # graph_k_factor = 20  
     # louvain_n_iter = 5
     # louvain_resolution = 0.6
-    # louvain_use_weight = False
+    # louvain_use_weight = True
     # optimize_min_size = 10
     # optimize_size_ratio = 0.4
     # optimize_merge_small = True
