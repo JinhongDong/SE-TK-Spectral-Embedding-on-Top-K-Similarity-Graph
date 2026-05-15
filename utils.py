@@ -137,7 +137,7 @@ def community_topk_similarity_graph(G, embeddings, player_names, resolution,
     
     return G_emb
 
-def louvain_community_detection(G, resolution, n_iter, use_weight=True):
+def louvain_community_detection(G, resolution, n_iter, use_weight):
     """Louvain community detection method, time complexity O(n_iter * V log V)"""
     best_partition = None
     best_modularity = -1
@@ -150,7 +150,7 @@ def louvain_community_detection(G, resolution, n_iter, use_weight=True):
     return best_partition
 
 def hierarchical_community_optimization(G, partition, min_size, 
-                                       size_ratio, merge_small=True):
+                                       size_ratio):
     """Hierarchical community optimization, Merge overly small communities, time complexity O(V + E)"""
 
     comm_nodes = defaultdict(list)
