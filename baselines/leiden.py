@@ -13,7 +13,6 @@ import igraph as ig
 # ---------------------------------------------------------------------------#
 # 0. Read network
 # ---------------------------------------------------------------------------#
-
 def load_graph_with_attributes(node_file_path, edge_file_path):
     G = nx.Graph()
     with open(node_file_path, 'r') as f:
@@ -30,27 +29,9 @@ def load_graph_with_attributes(node_file_path, edge_file_path):
                 G.add_edge(int(n1), int(n2))
     return G
 
-def best_map(true_labels, pred_labels):
-    true_labels = np.asarray(true_labels)
-    pred_labels = np.asarray(pred_labels)
-    
-    true_labels = true_labels.astype(int)
-    pred_labels = pred_labels.astype(int)
-    
-    D = max(pred_labels.max(), true_labels.max()) + 1
-    w = np.zeros((D, D), dtype=np.int64)
-    
-    for i in range(pred_labels.size):
-        w[pred_labels[i], true_labels[i]] += 1
-    
-    row_ind, col_ind = linear_sum_assignment(w.max() - w)
-    mapping = {int(row): int(col) for row, col in zip(row_ind, col_ind)}
-    return np.array([mapping[label] for label in pred_labels])
-
 # ---------------------------------------------------------------------------#
 # 1. Example entry
 # ---------------------------------------------------------------------------#
-
 if __name__ == "__main__":
     #tree
     file_name = "tree"  
@@ -118,8 +99,6 @@ if __name__ == "__main__":
         seed=leiden_seed,
     )
     pred_labels = np.array(partition.membership)
-    
-    pred_labels = best_map(true_labels, pred_labels)
     
     modularity_score = ig_graph.modularity(pred_labels)
     ari = adjusted_rand_score(true_labels, pred_labels)
