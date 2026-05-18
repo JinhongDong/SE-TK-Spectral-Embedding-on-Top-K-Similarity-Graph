@@ -21,20 +21,19 @@ import utils
 
 if __name__ == "__main__":
     
-
     #tree 
     file_name = "tree"  
     input_dir = os.path.join('.', 'norm_dataset', file_name)
     node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
     edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
-    embed_n_components = 20
+    embed_n_components = 30
     embed_use_adaptive = True  
     graph_similarity_threshold = 0.5
     graph_preserve_ratio = 0.4
     graph_max_preserved_edges = 500
     graph_k_factor = 10  
     louvain_n_iter = 10
-    louvain_resolution = 2.0
+    louvain_resolution = 0.8
     louvain_use_weight = True
     optimize_min_size = 3
     optimize_size_ratio = 0.3
@@ -142,8 +141,6 @@ if __name__ == "__main__":
         'modularity_original_graph': 0.2
     }
     random_seed = 42
-    np.random.seed(random_seed)
-    random.seed(random_seed)
     
     G = utils.load_graph_with_attributes(node_file_path, edge_file_path)
     player_names = sorted(G.nodes())
@@ -189,9 +186,11 @@ if __name__ == "__main__":
 
     best_score = -1
     best_result = {}
-    
     for idx, params in enumerate(ParameterGrid(param_grid)):
         try:
+            np.random.seed(random_seed)
+            random.seed(random_seed)
+            
             # 1. Generate spectral embeddings
             embeddings = utils.enhanced_structural_embeddings(G, params['n_components'],player_names)
             
@@ -222,12 +221,10 @@ if __name__ == "__main__":
             )
             
             pred_labels = [partition[n] for n in player_names]
-            pred_labels = utils.best_map(true_labels, pred_labels)
 
             # Evaluation metrics
             nmi = normalized_mutual_info_score(true_labels, pred_labels)
             ari = adjusted_rand_score(true_labels, pred_labels)
-            
             try:
                 modularity_original_graph = community_louvain.modularity(partition, G)
                 modularity_similarity_graph = community_louvain.modularity(partition, G_emb)
