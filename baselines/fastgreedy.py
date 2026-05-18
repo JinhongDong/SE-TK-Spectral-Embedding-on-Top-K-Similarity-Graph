@@ -13,7 +13,6 @@ from networkx.algorithms.community import modularity
 # ---------------------------------------------------------------------------#
 #  0.   read network
 # ---------------------------------------------------------------------------#
-
 def load_graph_with_attributes(node_file_path, edge_file_path):
     G = nx.Graph()
     with open(node_file_path, 'r') as f:
@@ -31,31 +30,10 @@ def load_graph_with_attributes(node_file_path, edge_file_path):
     return G
 
 # ---------------------------------------------------------------------------#
-#  1.   map the labels
+#  1.   Example entry
 # ---------------------------------------------------------------------------#
-def best_map(true_labels, pred_labels):
-    true_labels = np.asarray(true_labels)
-    pred_labels = np.asarray(pred_labels)
-    
-    true_labels = true_labels.astype(int)
-    pred_labels = pred_labels.astype(int)
-    
-    D = max(pred_labels.max(), true_labels.max()) + 1
-    w = np.zeros((D, D), dtype=np.int64)
-    
-    for i in range(pred_labels.size):
-        w[pred_labels[i], true_labels[i]] += 1
-    
-    row_ind, col_ind = linear_sum_assignment(w.max() - w)
-    mapping = {int(row): int(col) for row, col in zip(row_ind, col_ind)}
-    return np.array([mapping[label] for label in pred_labels])
-
-# ---------------------------------------------------------------------------#
-#  2.   Example entry
-# ---------------------------------------------------------------------------#
-
 if __name__ == "__main__":
-    
+
     #tree 
     file_name = "tree"  
     input_dir = os.path.join('..', 'norm_dataset', file_name)
@@ -104,7 +82,6 @@ if __name__ == "__main__":
             partition[node] = i
     
     pred_labels = [partition[n] for n in player_names]
-    pred_labels = best_map(true_labels, pred_labels)
     
     modularity_score = modularity(G, communities)
     ari = adjusted_rand_score(true_labels, pred_labels)
