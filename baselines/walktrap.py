@@ -12,7 +12,6 @@ import igraph as ig
 # ---------------------------------------------------------------------------#
 # 0. Read network
 # ---------------------------------------------------------------------------#
-
 def load_graph_with_attributes(node_file_path, edge_file_path):
     G = nx.Graph()
     with open(node_file_path, 'r') as f:
@@ -29,28 +28,9 @@ def load_graph_with_attributes(node_file_path, edge_file_path):
                 G.add_edge(int(n1), int(n2))
     return G
 
-def best_map(true_labels, pred_labels):
-    true_labels = np.asarray(true_labels)
-    pred_labels = np.asarray(pred_labels)
-    
-    # Ensure labels are non-negative integers
-    true_labels = true_labels.astype(int)
-    pred_labels = pred_labels.astype(int)
-    
-    D = max(pred_labels.max(), true_labels.max()) + 1
-    w = np.zeros((D, D), dtype=np.int64)
-    
-    for i in range(pred_labels.size):
-        w[pred_labels[i], true_labels[i]] += 1
-    
-    row_ind, col_ind = linear_sum_assignment(w.max() - w)
-    mapping = {int(row): int(col) for row, col in zip(row_ind, col_ind)}
-    return np.array([mapping[label] for label in pred_labels])
-
 # ---------------------------------------------------------------------------#
-# 3. Example entry
+# 1. Example entry
 # ---------------------------------------------------------------------------#
-
 if __name__ == "__main__":
     # tree
     file_name = "tree"  
@@ -111,7 +91,6 @@ if __name__ == "__main__":
         u_idx = node_id_to_idx[u]
         v_idx = node_id_to_idx[v]
         edges.append((u_idx, v_idx))
-    
     if edges:
         ig_G.add_edges(edges)
     
@@ -123,8 +102,6 @@ if __name__ == "__main__":
     membership = dendrogram.membership
     
     pred_labels = [membership[node_id_to_idx[node_id]] for node_id in player_names]
-
-    pred_labels = best_map(true_labels, pred_labels)
     
     modularity_score = ig_G.modularity(membership)
     ari = adjusted_rand_score(true_labels, pred_labels)
