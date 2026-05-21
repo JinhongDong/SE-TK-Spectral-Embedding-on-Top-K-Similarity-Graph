@@ -27,7 +27,6 @@ if __name__ == "__main__":
     node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
     edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     embed_n_components = 30
-    embed_use_adaptive = True  
     graph_similarity_threshold = 0.5
     graph_preserve_ratio = 0.4
     graph_max_preserved_edges = 500
@@ -46,7 +45,6 @@ if __name__ == "__main__":
     # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
     # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     # embed_n_components = 10
-    # embed_use_adaptive = True  
     # graph_similarity_threshold = 0.3
     # graph_preserve_ratio = 0.4
     # graph_max_preserved_edges = 500
@@ -65,7 +63,6 @@ if __name__ == "__main__":
     # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
     # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     # embed_n_components = 30
-    # embed_use_adaptive = True  
     # graph_similarity_threshold = 0.7
     # graph_preserve_ratio = 0.8
     # graph_max_preserved_edges = 1000
@@ -84,7 +81,6 @@ if __name__ == "__main__":
     # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
     # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     # embed_n_components = 90
-    # embed_use_adaptive = True  
     # graph_similarity_threshold = 0.3
     # graph_preserve_ratio = 0.4
     # graph_max_preserved_edges = 500
@@ -103,7 +99,6 @@ if __name__ == "__main__":
     # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
     # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     # embed_n_components = 50
-    # embed_use_adaptive = True  
     # graph_similarity_threshold = 0.7
     # graph_preserve_ratio = 0.5
     # graph_max_preserved_edges = 3000
@@ -122,7 +117,6 @@ if __name__ == "__main__":
     # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
     # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     # embed_n_components = 256
-    # embed_use_adaptive = True  
     # graph_similarity_threshold = 0.5
     # graph_preserve_ratio = 0.4
     # graph_max_preserved_edges = 10000
