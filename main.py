@@ -135,6 +135,7 @@ if __name__ == "__main__":
         'modularity_original_graph': 0.2
     }
     random_seed = 42
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
     G = utils.load_graph_with_attributes(node_file_path, edge_file_path)
     player_names = sorted(G.nodes())
@@ -184,9 +185,13 @@ if __name__ == "__main__":
         try:
             np.random.seed(random_seed)
             random.seed(random_seed)
+            torch.manual_seed(random_seed)
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed(random_seed)
+                torch.cuda.manual_seed_all(random_seed)
             
             # 1. Generate spectral embeddings
-            embeddings = utils.enhanced_structural_embeddings(G, params['n_components'],player_names)
+            embeddings = utils.enhanced_structural_embeddings(G, params['n_components'],player_names,device)
             
             # 2. Build new graph based on community structure and TopK similarity
             G_emb = utils.community_topk_similarity_graph(
