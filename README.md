@@ -20,7 +20,7 @@ This repository contains the code accompanying the paper **"文章标题."**
   Utility functions that support the main pipeline (e.g., data loading, preprocessing).
 
 - `requirement.txt`  
-  - Contains Python package dependencies (Python 3.11、PyTorch 2.7.0、CUDA 13.0) required to run the project.
+  - Contains Python package dependencies (Python 3.11.8、PyTorch 2.7.0、CUDA 13.0) required to run the project.
   - Example:    pip install -r requirements.txt
   
 - `baselines/`  
