@@ -24,9 +24,6 @@ if __name__ == "__main__":
     
     #tree 
     file_name = "tree"  
-    input_dir = os.path.join('.', 'norm_dataset', file_name)
-    node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     embed_n_components = 30
     graph_similarity_threshold = 0.5
     graph_preserve_ratio = 0.4
@@ -37,14 +34,10 @@ if __name__ == "__main__":
     louvain_use_weight = True
     optimize_min_size = 3
     optimize_size_ratio = 0.3
-    optimize_merge_small = True
     use_grid_search = True
 
     # lol
     # file_name = "lol"  
-    # input_dir = os.path.join('.', 'norm_dataset', file_name)
-    # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     # embed_n_components = 10
     # graph_similarity_threshold = 0.3
     # graph_preserve_ratio = 0.4
@@ -55,14 +48,10 @@ if __name__ == "__main__":
     # louvain_use_weight = True
     # optimize_min_size = 3
     # optimize_size_ratio = 0.2
-    # optimize_merge_small = True
     # use_grid_search = True
 
     # LFR_base
     # file_name = "LFR_base"  
-    # input_dir = os.path.join('.', 'norm_dataset', file_name)
-    # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     # embed_n_components = 30
     # graph_similarity_threshold = 0.7
     # graph_preserve_ratio = 0.8
@@ -73,14 +62,10 @@ if __name__ == "__main__":
     # louvain_use_weight = True
     # optimize_min_size = 3
     # optimize_size_ratio = 0.2
-    # optimize_merge_small = True
     # use_grid_search = True
 
     # email-Eu-core
     # file_name = "email-Eu-core"  
-    # input_dir = os.path.join('.', 'norm_dataset', file_name)
-    # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     # embed_n_components = 90
     # graph_similarity_threshold = 0.3
     # graph_preserve_ratio = 0.4
@@ -91,14 +76,10 @@ if __name__ == "__main__":
     # louvain_use_weight = True
     # optimize_min_size = 3
     # optimize_size_ratio = 0.2
-    # optimize_merge_small = True
     # use_grid_search = True
 
     # facebook
     # file_name = "facebook"  
-    # input_dir = os.path.join('.', 'norm_dataset', file_name)
-    # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     # embed_n_components = 50
     # graph_similarity_threshold = 0.7
     # graph_preserve_ratio = 0.5
@@ -109,14 +90,10 @@ if __name__ == "__main__":
     # louvain_use_weight = True
     # optimize_min_size = 10
     # optimize_size_ratio = 0.2
-    # optimize_merge_small = True
     # use_grid_search = True
 
     # com-youtube_largest_deliso
     # file_name = "com-youtube_largest_deliso"  
-    # input_dir = os.path.join('.', 'norm_dataset', file_name)
-    # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     # embed_n_components = 256
     # graph_similarity_threshold = 0.5
     # graph_preserve_ratio = 0.4
@@ -127,7 +104,6 @@ if __name__ == "__main__":
     # louvain_use_weight = True
     # optimize_min_size = 10
     # optimize_size_ratio = 0.4
-    # optimize_merge_small = True
     # use_grid_search = True
 
     composite_score_weights = {
@@ -137,7 +113,10 @@ if __name__ == "__main__":
     }
     random_seed = 42
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    
+    input_dir = os.path.join('.', 'norm_dataset', file_name)
+    node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
+    edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
+
     G = utils.load_graph_with_attributes(node_file_path, edge_file_path)
     player_names = sorted(G.nodes())
     true_labels = [G.nodes[n]['actual_community'] for n in player_names]
