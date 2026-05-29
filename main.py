@@ -195,8 +195,7 @@ if __name__ == "__main__":
             partition = utils.hierarchical_community_optimization(
                 G_emb, partition,
                 min_size=optimize_min_size,
-                size_ratio=optimize_size_ratio,
-                merge_small=optimize_merge_small
+                size_ratio=optimize_size_ratio
             )
             
             pred_labels = [partition[n] for n in player_names]
