@@ -32,43 +32,18 @@ def load_graph_with_attributes(node_file_path, edge_file_path):
 # 1. Example entry
 # ---------------------------------------------------------------------------#
 if __name__ == "__main__":
-    #tree
+
     file_name = "tree"  
+    # file_name = "lol" 
+    # file_name = "LFR_base" 
+    # file_name = "email-Eu-core" 
+    # file_name = "facebook" 
+    # file_name = "com-youtube_largest_deliso" 
+
     input_dir = os.path.join('..', 'norm_dataset', file_name)
     node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
     edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     
-    
-    # lol
-    # file_name = "lol" 
-    # input_dir = os.path.join('..', 'norm_dataset', file_name)
-    # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
-
-    # LFR_base
-    # file_name = "LFR_base" 
-    # input_dir = os.path.join('..', 'norm_dataset', file_name)
-    # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
-
-    # email-Eu-core
-    # file_name = "email-Eu-core" 
-    # input_dir = os.path.join('..', 'norm_dataset', file_name)
-    # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
-
-    # facebook
-    # file_name = "facebook" 
-    # input_dir = os.path.join('..', 'norm_dataset', file_name)
-    # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
-
-    # com-youtube_largest_deliso
-    # file_name = "com-youtube_largest_deliso" 
-    # input_dir = os.path.join('..', 'norm_dataset', file_name)
-    # node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
-    # edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
-
     resolution=1.0
     G = load_graph_with_attributes(node_file_path, edge_file_path)
     player_names = sorted(G.nodes())
