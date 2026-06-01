@@ -58,7 +58,7 @@ if __name__ == "__main__":
     # graph_max_preserved_edges = 1000
     # graph_k_factor = 10  
     # louvain_n_iter = 10
-    # louvain_resolution = 1.2
+    # louvain_resolution = 0.8
     # louvain_use_weight = True
     # optimize_min_size = 3
     # optimize_size_ratio = 0.2
@@ -66,13 +66,13 @@ if __name__ == "__main__":
 
     # email-Eu-core
     # file_name = "email-Eu-core"  
-    # embed_n_components = 90
+    # embed_n_components = 70
     # graph_similarity_threshold = 0.3
     # graph_preserve_ratio = 0.4
     # graph_max_preserved_edges = 500
     # graph_k_factor = 10  
     # louvain_n_iter = 5
-    # louvain_resolution = 1.5
+    # louvain_resolution = 2.0
     # louvain_use_weight = True
     # optimize_min_size = 3
     # optimize_size_ratio = 0.2
@@ -86,7 +86,7 @@ if __name__ == "__main__":
     # graph_max_preserved_edges = 3000
     # graph_k_factor = 15  
     # louvain_n_iter = 5
-    # louvain_resolution = 1.2
+    # louvain_resolution = 1.0
     # louvain_use_weight = True
     # optimize_min_size = 10
     # optimize_size_ratio = 0.2
