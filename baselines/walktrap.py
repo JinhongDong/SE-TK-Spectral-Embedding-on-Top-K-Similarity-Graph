@@ -34,7 +34,7 @@ def load_graph_with_attributes(node_file_path, edge_file_path):
 if __name__ == "__main__":
     # tree
     file_name = "tree"  
-    walktrap_steps = 10          
+    walktrap_steps = 5         
     
     # lol
     # file_name = "lol" 
