@@ -47,6 +47,8 @@ if __name__ == "__main__":
     
     leiden_n_iterations = 2
     leiden_seed = 42
+    leiden_resolution=1.0
+    leiden_beta=0.01
     
     G = load_graph_with_attributes(node_file_path, edge_file_path)
     node_names = sorted(G.nodes())
@@ -71,6 +73,8 @@ if __name__ == "__main__":
     partition = leidenalg.find_partition(
         ig_graph,
         leidenalg.ModularityVertexPartition,   
+        resolution=leiden_resolution,
+        beta=leiden_beta,
         n_iterations=leiden_n_iterations,
         seed=leiden_seed,
     )
