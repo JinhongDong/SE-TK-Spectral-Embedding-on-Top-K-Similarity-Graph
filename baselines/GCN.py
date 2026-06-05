@@ -68,12 +68,13 @@ class GCN(torch.nn.Module):
         return x
     
 
-def five_fold_predict_batch(data, model_class, epochs=100, batch_size=1024, num_neighbors=[10, 10]):
+def five_fold_predict_batch(data, model_class, epochs=100, batch_size=1024, num_neighbors=[10, 10],full_graph_threshold=10000):
     device = data.x.device
     num_nodes = data.num_nodes
     kf = KFold(n_splits=5, shuffle=True, random_state=42)
     all_preds = torch.full((num_nodes,), -1, dtype=torch.long, device=device)
-
+    use_full_graph = num_nodes < full_graph_threshold
+    
     for fold, (train_idx, test_idx) in enumerate(kf.split(np.arange(num_nodes))):
         print(f"Fold {fold + 1}/5")
         train_idx = torch.tensor(train_idx, dtype=torch.long, device=device)
@@ -84,13 +85,20 @@ def five_fold_predict_batch(data, model_class, epochs=100, batch_size=1024, num_
         criterion = torch.nn.CrossEntropyLoss()
 
         # NeighborLoader for training
-        train_loader = NeighborLoader(
-            data,
-            input_nodes=train_idx,
-            num_neighbors=num_neighbors,
-            batch_size=batch_size,
-            shuffle=True
-        )
+        if use_full_graph:
+            train_loader = DataLoader(
+                data[train_idx],
+                batch_size=batch_size,
+                shuffle=True
+            )
+        else:
+            train_loader = NeighborLoader(
+                data,
+                input_nodes=train_idx,
+                num_neighbors=num_neighbors,
+                batch_size=batch_size,
+                shuffle=True
+            )
 
         # Training loop
         for epoch in tqdm(range(epochs), desc=f"Epoch (Fold {fold+1})"):
