@@ -17,6 +17,7 @@ import heapq
 from itertools import combinations
 import warnings
 from networkx.algorithms.community import modularity
+from heapq import heappush, heappop, heapify
 warnings.filterwarnings('ignore')
 
 def load_graph_with_attributes(node_file_path, edge_file_path):
@@ -37,14 +38,12 @@ def load_graph_with_attributes(node_file_path, edge_file_path):
                 n1, n2 = parts
                 edges.append((int(n1), int(n2)))
     G.add_edges_from(edges)
-    
     return G
 
 
 def fastgreedy_memory_efficient(G):
     n = G.number_of_nodes()
     m = G.number_of_edges()
-    
     node_list = sorted(G.nodes())
     node_to_idx = {node: i for i, node in enumerate(node_list)}
     
@@ -59,20 +58,17 @@ def fastgreedy_memory_efficient(G):
         degrees[j] += 1
     
     community = np.arange(n, dtype=np.int32)
-    community_degree = degrees.copy()  # 社区的度
-    community_size = np.ones(n, dtype=np.int32)  # 社区大小
+    community_degree = degrees.copy()  
+    community_size = np.ones(n, dtype=np.int32)  
     
-    A_inter = {}  # 社区间的边权重
+    A_inter = {}  
     for i in range(n):
         for j in adj_list[i]:
-            if i < j:  # 避免重复
+            if i < j:  
                 c1, c2 = community[i], community[j]
                 if c1 != c2:
                     key = (min(c1, c2), max(c1, c2))
                     A_inter[key] = A_inter.get(key, 0.0) + 1.0
-    
-    # 格式: (-delta_Q, c1, c2, A_inter[c1,c2])
-    from heapq import heappush, heappop, heapify
     
     m_float = float(m)
     heap = []
@@ -87,11 +83,9 @@ def fastgreedy_memory_efficient(G):
     while heap and len(active_communities) > 1:
         neg_delta_Q, c1, c2, A_ij = heappop(heap)
         delta_Q = -neg_delta_Q
-        
         if c1 not in active_communities or c2 not in active_communities:
             continue
-        
-        if delta_Q <= 1e-7:  # 增益太小，停止
+        if delta_Q <= 1e-7:  
             break
         
         merge_history.append((c1, c2, delta_Q))
@@ -106,7 +100,6 @@ def fastgreedy_memory_efficient(G):
         community_size[c2] = 0
 
         new_edges = {}
-
         related_edges = defaultdict(float)
 
         for (ci, cj), weight in list(A_inter.items()):
@@ -141,9 +134,9 @@ def fastgreedy_memory_efficient(G):
                 heappush(heap, (-delta_Q, ci, cj, A_ij))
         
         if len(active_communities) % 1000 == 0 or len(active_communities) <= 10:
-            print(f"剩余社区数: {len(active_communities)}, 当前ΔQ: {delta_Q:.6f}")
+            print(f"Remaining number of communities: {len(active_communities)}, now ΔQ: {delta_Q:.6f}")
     
-    print(f"合并完成，最终社区数: {len(active_communities)}, 耗时: {time.time()-start_time:.2f}秒")
+    print(f"Merging completed, final number of communities: {len(active_communities)})
     
     unique_comms = np.unique(community)
     comm_mapping = {old: new for new, old in enumerate(unique_comms)}
@@ -179,12 +172,12 @@ if __name__ == "__main__":
     # file_name = 'email-Eu-core'
     # file_name = 'facebook'
     # file_name = 'com-youtube_largest_deliso'
+    
     input_dir = os.path.join('..', 'norm_dataset', file_name)
     node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
     edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
     
     G = load_graph_with_attributes(node_file_path, edge_file_path)
-    
     player_names = sorted(G.nodes())
     true_labels = [G.nodes[n]['actual_community'] for n in player_names]
     
@@ -203,5 +196,4 @@ if __name__ == "__main__":
     ari = adjusted_rand_score(true_labels, pred_labels)
     nmi = normalized_mutual_info_score(true_labels, pred_labels)
 
-    
     print(f"{file_name} fastgreedy_result: Modularity: {modularity_score:.6f}, ARI: {ari:.6f}, NMI: {nmi:.6f}")
