@@ -113,6 +113,7 @@ if __name__ == "__main__":
     }
     random_seed = 42
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    
     input_dir = os.path.join('.', 'norm_dataset', file_name)
     node_file_path = os.path.join(input_dir, f'{file_name}_nodes.txt')
     edge_file_path = os.path.join(input_dir, f'{file_name}_edges.txt')
@@ -209,7 +210,6 @@ if __name__ == "__main__":
             except:
                 modularity_original_graph = 0.0
                 modularity_similarity_graph = 0.0
-            
             metrics = {
                 'NMI': nmi,
                 'ARI': ari,
@@ -223,7 +223,6 @@ if __name__ == "__main__":
                 composite_score_weights['NMI'] * metrics['NMI'] +
                 composite_score_weights['modularity_original_graph'] * metrics['modularity_original_graph']
             )
-            
             if composite_score > best_score:
                 best_score = composite_score
                 best_result = {
