@@ -36,9 +36,7 @@ This repository contains the code accompanying the paper **"文章标题."**
   Stores the experiment results:
   - `ARI.xlsx`, `NMI.xlsx`, `Q.xlsx`: Summarized evaluation results (Adjusted Rand Index, Normalized Mutual Information, Modularity Q).
   - `Topological Features.xlsx`: Contains the topological structure descriptions for the 6 datasets.
-  - `LFR_base_structure_comparison.txt`: Displays a visualization of the results before and after running the SECT algorithm on the LFR_base dataset.
-  - `tree_structure_comparison.txt`: Displays a visualization of the results before and after running the SECT algorithm on the tree dataset.
----
+
 
 ## 🚀 Usage
 
