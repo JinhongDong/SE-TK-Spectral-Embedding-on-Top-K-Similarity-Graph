@@ -41,7 +41,11 @@ def load_graph_with_attributes(node_file_path, edge_file_path):
     return G
 
 def enhanced_structural_embeddings(G, n_components,player_names,device):
-    """Spectral embedding method, time complexity O(V^3)"""
+    """Spectral embedding method, convert the network structure into low-dimensional embeddings 
+    using spectral embedding derived from the graph Laplacian to capture node similarity and local neighborhoods.
+    time complexity O(V³) + O(V²·d) """
+
+    # for small graphs, retain the eigenvectors corresponding to the smallest n non-zero eigenvalues
     if G.number_of_nodes() < 10000:
         adj_np = nx.to_numpy_array(G, nodelist=player_names)
         adj = torch.tensor(adj_np, dtype=torch.float64, device=device)
@@ -58,7 +62,8 @@ def enhanced_structural_embeddings(G, n_components,player_names,device):
         embeddings = embeddings / (embeddings.norm(dim=1, keepdim=True) + 1e-8)
 
         return embeddings.cpu().numpy()
-        
+
+    # for large graphs, use randomized singular value decomposition 
     else:
         n_nodes = len(player_names)
         adj_matrix = nx.to_numpy_array(G, nodelist=player_names)
@@ -81,7 +86,10 @@ def enhanced_structural_embeddings(G, n_components,player_names,device):
 def community_topk_similarity_graph(G, embeddings, player_names, resolution,
                                    similarity_threshold, preserve_ratio,
                                    max_preserved_edges, k_factor):
-    """Build new graph based on community structure and TopK similarity, time complexity O(V^2 + E)"""
+    """Build new graph based on community structure and TopK similarity, 
+    add new edges based on node similarity while preserving part of the original community structure.
+    time complexity  O(V²·d) + O(E) + O(k·V·logV)"""
+                                       
     G_emb = nx.Graph()
     G_emb.add_nodes_from(player_names)
     
@@ -101,10 +109,11 @@ def community_topk_similarity_graph(G, embeddings, player_names, resolution,
         random.shuffle(intra_edges)
         for u, v in intra_edges[:num_to_preserve]:
             G_emb.add_edge(u, v, weight=1.0, edge_type="preserved")
+            
     except Exception as e:
         print(f"Community structure preservation failed: {e}")
-        # If community detection fails, use centrality strategy as backup
         try:
+            # If community detection fails, use centrality strategy as backup
             edge_centrality = nx.edge_betweenness_centrality(G)
             sorted_edges = sorted(G.edges(), key=lambda x: edge_centrality[x], reverse=True)
             for u, v in sorted_edges[:min(max_edges,int(len(sorted_edges)*preserve_ratio))]:
@@ -147,7 +156,9 @@ def community_topk_similarity_graph(G, embeddings, player_names, resolution,
     return G_emb
 
 def louvain_community_detection(G, resolution, n_iter, use_weight):
-    """Louvain community detection method, time complexity O(n_iter * V log V)"""
+    """Louvain community detection method, executed multiple times and select the optimal result.
+    time complexity O(n_iter * V log V)"""
+    
     weight_param = 'weight' if use_weight else None
     best_partition = None
     best_modularity = -1
@@ -160,7 +171,8 @@ def louvain_community_detection(G, resolution, n_iter, use_weight):
     return best_partition
 
 def hierarchical_community_optimization(G, partition, min_size, size_ratio):
-    """Hierarchical community optimization, Merge overly small communities, time complexity O(V + E)"""
+    """community optimization, Merge overly small communities into most closely similar neighboring communities.
+    time complexity O(V + E)"""
 
     comm_nodes = defaultdict(list)
     for node, comm in partition.items():
@@ -184,7 +196,6 @@ def hierarchical_community_optimization(G, partition, min_size, size_ratio):
                 if neighbor_comm != comm:
                     weight = G[node][neighbor].get('weight', 1.0)
                     neighbor_comms[neighbor_comm] += weight
-        
         if neighbor_comms:
             target_comm = max(neighbor_comms, key=neighbor_comms.get)
             for node in comm_nodes[comm]:
