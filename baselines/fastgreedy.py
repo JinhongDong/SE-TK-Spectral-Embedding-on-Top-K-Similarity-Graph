@@ -1,3 +1,4 @@
+#fastgreedy.py
 import os
 import time
 import numpy as np
@@ -18,8 +19,12 @@ from itertools import combinations
 import warnings
 from networkx.algorithms.community import modularity
 from heapq import heappush, heappop, heapify
+from networkx.algorithms.community import greedy_modularity_communities
 warnings.filterwarnings('ignore')
 
+# ---------------------------------------------------------------------------#
+# 0. Load network
+# ---------------------------------------------------------------------------#
 def load_graph_with_attributes(node_file_path, edge_file_path):
     G = nx.Graph()
     nodes_data = {}
@@ -40,7 +45,9 @@ def load_graph_with_attributes(node_file_path, edge_file_path):
     G.add_edges_from(edges)
     return G
 
-
+# ---------------------------------------------------------------------------#
+# 1. fastgreedy function
+# ---------------------------------------------------------------------------#
 def fastgreedy_memory_efficient(G):
     n = G.number_of_nodes()
     m = G.number_of_edges()
@@ -136,7 +143,7 @@ def fastgreedy_memory_efficient(G):
         if len(active_communities) % 1000 == 0 or len(active_communities) <= 10:
             print(f"Remaining number of communities: {len(active_communities)}, now ΔQ: {delta_Q:.6f}")
     
-    print(f"Merging completed, final number of communities: {len(active_communities)})
+    print(f"Merging completed, final number of communities: {len(active_communities)}")
     
     unique_comms = np.unique(community)
     comm_mapping = {old: new for new, old in enumerate(unique_comms)}
@@ -148,14 +155,11 @@ def fastgreedy_memory_efficient(G):
     
     return partition
 
-
-
 def fastgreedy_auto(G):
     n = G.number_of_nodes()
     if n >= 10000:
         return fastgreedy_memory_efficient(G)
     else:
-        from networkx.algorithms.community import greedy_modularity_communities
         communities = list(greedy_modularity_communities(G))
         partition = {}
         for cid, nodes in enumerate(communities):
@@ -163,7 +167,9 @@ def fastgreedy_auto(G):
                 partition[node] = cid
         return partition
 
-
+# ---------------------------------------------------------------------------#
+# 2. Example entry
+# ---------------------------------------------------------------------------#
 if __name__ == "__main__":
     
     file_name="tree"
